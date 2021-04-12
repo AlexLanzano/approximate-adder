@@ -1,0 +1,114 @@
+#! /usr/bin/vvp
+:ivl_version "11.0 (stable)" "(v11_0)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/usr/lib/ivl/system.vpi";
+:vpi_module "/usr/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/ivl/va_math.vpi";
+S_0x55c29bebfcf0 .scope module, "accurate_adder_tb" "accurate_adder_tb" 2 1;
+ .timescale 0 0;
+v0x55c29bee8a60_0 .var "a", 7 0;
+v0x55c29bee8b40_0 .net "a_tv", 7 0, v0x55c29bee8a60_0;  1 drivers
+v0x55c29bee8c00_0 .var "b", 7 0;
+v0x55c29bee8ca0_0 .net "b_tv", 7 0, v0x55c29bee8c00_0;  1 drivers
+v0x55c29bee8d60_0 .net "carry_ov", 0 0, L_0x55c29bee9360;  1 drivers
+v0x55c29bee8e50_0 .var/i "error", 31 0;
+v0x55c29bee8ef0_0 .var "expected_carry", 0 0;
+v0x55c29bee8fb0_0 .var "expected_output", 7 0;
+v0x55c29bee9090_0 .net "out_ov", 7 0, L_0x55c29bee9450;  1 drivers
+S_0x55c29bed3b50 .scope module, "UUT" "accurate_adder" 2 11, 3 1 0, S_0x55c29bebfcf0;
+ .timescale 0 0;
+    .port_info 0 /INPUT 8 "a";
+    .port_info 1 /INPUT 8 "b";
+    .port_info 2 /OUTPUT 8 "out";
+    .port_info 3 /OUTPUT 1 "carry";
+L_0x7f270d1ba060 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x55c29bed3d30_0 .net *"_ivl_10", 0 0, L_0x7f270d1ba060;  1 drivers
+v0x55c29bee8120_0 .net *"_ivl_11", 8 0, L_0x55c29bee97d0;  1 drivers
+v0x55c29bee8200_0 .net *"_ivl_3", 8 0, L_0x55c29bee9590;  1 drivers
+L_0x7f270d1ba018 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x55c29bee82c0_0 .net *"_ivl_6", 0 0, L_0x7f270d1ba018;  1 drivers
+v0x55c29bee83a0_0 .net *"_ivl_7", 8 0, L_0x55c29bee9680;  1 drivers
+v0x55c29bee84d0_0 .net "a", 7 0, v0x55c29bee8a60_0;  alias, 1 drivers
+v0x55c29bee85b0_0 .net "b", 7 0, v0x55c29bee8c00_0;  alias, 1 drivers
+v0x55c29bee8690_0 .net "carry", 0 0, L_0x55c29bee9360;  alias, 1 drivers
+v0x55c29bee8750_0 .net "out", 7 0, L_0x55c29bee9450;  alias, 1 drivers
+L_0x55c29bee9360 .part L_0x55c29bee97d0, 8, 1;
+L_0x55c29bee9450 .part L_0x55c29bee97d0, 0, 8;
+L_0x55c29bee9590 .concat [ 8 1 0 0], v0x55c29bee8a60_0, L_0x7f270d1ba018;
+L_0x55c29bee9680 .concat [ 8 1 0 0], v0x55c29bee8c00_0, L_0x7f270d1ba060;
+L_0x55c29bee97d0 .arith/sum 9, L_0x55c29bee9590, L_0x55c29bee9680;
+S_0x55c29bee88b0 .scope begin, "maintestbench" "maintestbench" 2 15, 2 15 0, S_0x55c29bebfcf0;
+ .timescale 0 0;
+    .scope S_0x55c29bebfcf0;
+T_0 ;
+    %fork t_1, S_0x55c29bee88b0;
+    %jmp t_0;
+    .scope S_0x55c29bee88b0;
+t_1 ;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x55c29bee8e50_0, 0, 32;
+    %pushi/vec4 0, 0, 8;
+    %store/vec4 v0x55c29bee8a60_0, 0, 8;
+T_0.0 ;
+    %load/vec4 v0x55c29bee8a60_0;
+    %pad/u 32;
+    %cmpi/u 255, 0, 32;
+    %jmp/0xz T_0.1, 5;
+    %pushi/vec4 0, 0, 8;
+    %store/vec4 v0x55c29bee8c00_0, 0, 8;
+T_0.2 ;
+    %load/vec4 v0x55c29bee8c00_0;
+    %pad/u 32;
+    %cmpi/u 255, 0, 32;
+    %jmp/0xz T_0.3, 5;
+    %delay 1, 0;
+    %load/vec4 v0x55c29bee8a60_0;
+    %pad/u 9;
+    %load/vec4 v0x55c29bee8c00_0;
+    %pad/u 9;
+    %add;
+    %split/vec4 8;
+    %store/vec4 v0x55c29bee8fb0_0, 0, 8;
+    %store/vec4 v0x55c29bee8ef0_0, 0, 1;
+    %load/vec4 v0x55c29bee9090_0;
+    %load/vec4 v0x55c29bee8fb0_0;
+    %cmp/ne;
+    %flag_mov 8, 6;
+    %load/vec4 v0x55c29bee8d60_0;
+    %load/vec4 v0x55c29bee8ef0_0;
+    %cmp/ne;
+    %flag_or 6, 8;
+    %jmp/0xz  T_0.4, 6;
+    %pushi/vec4 1, 0, 32;
+    %store/vec4 v0x55c29bee8e50_0, 0, 32;
+    %vpi_call 2 26 "$display", "FAILED: %d", v0x55c29bee8b40_0, " + %d", v0x55c29bee8ca0_0, " produced out = %d", v0x55c29bee9090_0, " carry = %d\012", v0x55c29bee8d60_0, "Expected out = %d", v0x55c29bee8fb0_0, " carry = %d\012", v0x55c29bee8ef0_0 {0 0 0};
+T_0.4 ;
+    %load/vec4 v0x55c29bee8c00_0;
+    %addi 1, 0, 8;
+    %store/vec4 v0x55c29bee8c00_0, 0, 8;
+    %jmp T_0.2;
+T_0.3 ;
+    %load/vec4 v0x55c29bee8a60_0;
+    %addi 1, 0, 8;
+    %store/vec4 v0x55c29bee8a60_0, 0, 8;
+    %jmp T_0.0;
+T_0.1 ;
+    %load/vec4 v0x55c29bee8e50_0;
+    %cmpi/e 0, 0, 32;
+    %jmp/0xz  T_0.6, 4;
+    %vpi_call 2 34 "$display", "TEST PASSED" {0 0 0};
+T_0.6 ;
+    %end;
+    .scope S_0x55c29bebfcf0;
+t_0 %join;
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "accurate_adder_tb.v";
+    "accurate_adder.v";
