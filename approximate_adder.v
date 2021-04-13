@@ -4,13 +4,13 @@ module approximate_adder_1bit(input A, B, cin,
    supply0 gnd;
 
    wire invert_cout;
-   inverter test(cout, invert_cout);
+   inverter invert1(invert_cout, cout);
    
    pmos P1(a, vdd, A);
    pmos P2(a, vdd, B);
    pmos P3(b, vdd, B);
-   pmos P4(cout, a, cin);
-   pmos P5(cout, b, A);
+   pmos P4(invert_cout, a, cin);
+   pmos P5(invert_cout, b, A);
    pmos P6(e, vdd, invert_cout);
    pmos P7(sum, vdd, e);
 
@@ -18,12 +18,10 @@ module approximate_adder_1bit(input A, B, cin,
    nmos N1(c, gnd, A);
    nmos N2(c, gnd, B);
    nmos N3(d, gnd, B);
-   nmos N4(cout, c, cin);
-   nmos N5(cout, d, A);
+   nmos N4(invert_cout, c, cin);
+   nmos N5(invert_cout, d, A);
    nmos N6(e, gnd, invert_cout);
    nmos N7(sum, gnd, e);
-
-   
    
 endmodule
 

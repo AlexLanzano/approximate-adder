@@ -1,5 +1,5 @@
 module approximate_adder_8bit_tb();
-   integer error;
+   integer i = 0;
    reg [7:0] a, b, expected_sum;
    reg expected_cout;
    
@@ -16,17 +16,31 @@ module approximate_adder_8bit_tb();
                               .cout(cout_ov));
 
    initial begin : maintestbench
-      error = 0;
-      for (a = 0; a < 255; a = a + 1)
-        for (b = 0; b < 255; b = b + 1) begin
-           #1;
-           {expected_cout, expected_sum} = a + b;
-           if (sum_ov !== expected_sum ||
-               cout_ov !== expected_cout) begin
-              $display("FAILED: %d + %d produced sum=%d carry=%d",
-                       a_tv, b_tv, sum_ov, cout_ov);
-              $display("Expected sum=%d carry=%d\n", expected_sum, expected_cout);
-           end
-        end
+      $display("| a   | b   | sum | cout | expected sum | expected cout |");
+
+      // Initials A L
+      a = 65;
+      b = 76;
+      #1;
+      {expected_cout, expected_sum} = a + b;
+      $display("| %d | %d | %d |    %d |          %d |            %d |", 
+               a_tv, b_tv, sum_ov, cout_ov, expected_sum, expected_cout);
+      
+      // Initials G B
+      a = 71;
+      b = 66;
+      #1;
+      {expected_cout, expected_sum} = a + b;
+      $display("| %d | %d | %d |    %d |          %d |            %d |", 
+               a_tv, b_tv, sum_ov, cout_ov, expected_sum, expected_cout);
+      
+      // Initials T I
+      a = 84;
+      b = 73;
+      #1;
+      {expected_cout, expected_sum} = a + b;
+      $display("| %d | %d | %d |    %d |          %d |            %d |", 
+               a_tv, b_tv, sum_ov, cout_ov, expected_sum, expected_cout);
+      
    end
 endmodule
